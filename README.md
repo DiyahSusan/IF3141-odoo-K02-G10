@@ -1,106 +1,129 @@
-# IF3141 Sistem Informasi - Odoo Setup
+# IF3141 Implementasi Odoo - K02 G10
 
-## Introduction
+## Kelompok
 
-Odoo merupakan *Enterprise Resource Planning System* yang mampu melakukan implementasi modul modul kustom untuk menyelesaikan permasalahan proses bisnis pada suatu perusahaan.
+- Kelompok: `G10`
+- Kelas: `K02`
+- Sistem: `BETA Control Center`
+- Perusahaan: `PT Bentara Tabang Nusantara (BETA)`
 
-Odoo memberikan opsi *on-premise solution* sehingga developer dapat melakukan implementasi kustom modul pada local environment.
+## Deskripsi Sistem
 
-Repository ini diperuntukkan untuk Tugas Besar IF3141 Sistem Informasi. Untuk memulai silakan melakukan fork dan membuat repository private untuk workspace setiap kelompok.
+Repositori ini berisi implementasi Milestone 5 untuk sistem informasi PT BETA menggunakan Odoo 17 berbasis Docker. Fokus implementasi mengikuti hasil milestone sebelumnya: pengendalian dokumen terpusat, validasi requirement lintas divisi, keterlacakan proyek, dan visibilitas audit untuk mendukung kesiapan ISO 9001.
 
+Karena image Odoo Community pada template ini tidak menyediakan modul `Documents`, implementasi akhir memakai kombinasi modul bawaan `CRM` dan `Project` ditambah satu custom add-on dari scratch bernama `beta_sisfo`. Add-on ini menyediakan `workspace`, alur `requirement validation`, register `controlled document`, log audit, dan seed data agar demo lintas role bisa langsung dijalankan.
 
-## Pre-requisites
-Odoo diimplementasikan dengan Python environment dan database PostgreSQL. Repository ini sudah membungkus service aplikasi dan database melalui Docker.
+## Fitur Utama
 
-Sebelum memulai, pastikan dependency berikut sudah terpasang:
+- `Workspaces`: ringkasan kesiapan per ruang kerja, jumlah requirement, dan status dokumen.
+- `Requirement Validation`: alur Sales -> Engineering -> Project Officer untuk submit, revisi, validasi, dan penolakan requirement.
+- `Controlled Documents`: pencatatan dokumen spesifikasi/kontrak/SOP dengan versi, status validasi, dan pembuatan revisi.
+- `Audit Visibility`: daftar aksi penting yang tercatat setiap kali requirement atau dokumen berubah status.
+- `CRM + Project Traceability`: requirement tervalidasi otomatis membuat `CRM Opportunity` dan `Project` terkait.
 
-1. Docker Desktop
-	- Download: https://www.docker.com/products/docker-desktop/
-2. Python 3.11
-	- Digunakan untuk virtual environment (venv) pada proses development modul
+## Struktur Repo
 
-## Struktur Direktori
+- `config/`
+  - konfigurasi Odoo
+- `custom_addons/beta_sisfo/`
+  - custom module utama implementasi
+- `docs/`
+  - dokumen milestone, panduan kelas, dan catatan fit-gap implementasi
+- `dump/`
+  - hasil export/import database
+- `scripts/`
+  - script migrasi database
 
-- `/config`
-	- Untuk menyimpan konfigurasi Odoo
-- `/custom_addons`
-	- Tempat pengerjaan modul kustom
-- `/dump`
-	- Database dump yang dapat diakses scripts untuk proses import/export
-- `/scripts`
-	- Untuk melakukan database migration
-- `docker-compose.yml`
-	- Orchestration service Odoo dan PostgreSQL
+## Cara Menjalankan
 
-## Step-by-step Installation
+1. Jalankan stack Docker:
 
-1. Jalankan service Odoo dan PostgreSQL:
+```bash
+docker compose up -d
+```
 
-	```bash
-	docker compose up -d
-	```
+2. Buka Odoo di `http://localhost:8069`.
 
-2. Buka aplikasi pada browser:
-	- http://localhost:8069
+3. Login sebagai admin:
 
-3. Login menggunakan kredensial default:
-	- Username: `admin`
-	- Password: `admin`
+```text
+username: admin
+password: admin
+```
 
-4. Aktifkan mode developer:
-	- Masuk ke **Settings**
-	- Nyalakan **Developer Mode / Developer Access**
+4. Install atau upgrade custom module:
 
-5. Buat Python virtual environment pada workspace:
+- buka menu `Apps`
+- klik `Update Apps List`
+- cari `BETA SISFO Control Center`
+- klik `Install`
 
-	```bash
-	python3.11 -m venv .venv
-	source .venv/bin/activate
-	pip install --upgrade pip
-	pip install -r requirements.txt
-	```
+Jika modul sudah pernah terpasang dan ada perubahan kode:
 
-6. Implementasikan modul pada folder:
-	- `custom_addons/`
+- klik `Upgrade` pada modul `BETA SISFO Control Center`
+- bila perlu restart container:
 
-7. Setelah implementasi modul selesai, lakukan update daftar aplikasi:
-	- Masuk ke menu **Apps**
-	- Pilih **Update Apps List**
+```bash
+docker compose restart web
+```
 
-8. Jika melakukan perubahan terhadap isi modul (modifying database), jangan lupa lakukan langkah database migration dengan mengikuti step di heading bawah ini.
+## Kredensial Demo Role
+
+- `sales_user` / `sales123`
+- `engineer_user` / `engineer123`
+- `po_user` / `po123`
+- `coo_user` / `coo123`
+
+## Alur Demo yang Disarankan
+
+1. Login sebagai `sales_user`, buka `BETA Control Center > Requirement Validation`, lalu buat atau buka requirement sample dan submit.
+2. Login sebagai `engineer_user`, isi catatan engineering atau unggah dokumen draft pada tab `Controlled Documents`.
+3. Login sebagai `po_user`, validasi requirement dan dokumen sampai sistem membuat tautan `CRM Opportunity` dan `Project`.
+4. Login sebagai `coo_user`, buka `Workspaces` dan `Audit Visibility` untuk memantau kesiapan dan jejak perubahan.
+5. Sebagai `po_user`, buka dokumen tervalidasi lalu klik `Create Revision` untuk mendemonstrasikan version control.
+
+## Catatan Implementasi
+
+- Modul ini sengaja meminimalkan kustomisasi dan memakai `CRM` + `Project` sebagai fondasi built-in.
+- Fitur yang digantikan dari rencana awal `Documents` dibangun ulang secara ringan di `beta_sisfo` karena modul `documents` tidak tersedia pada image Odoo Community template ini.
+- Seed data awal mencakup satu workspace, satu requirement, satu controlled document, dan empat user role.
 
 ## Database Migration
 
-Odoo menggunakan local database pada implementasinya. Maka dari itu dibutuhkan migration system yang dapat dilakukan melakukan **dump db** atau **import db**. Sebelum melakukan migration jangan lupa untuk selalu mematikan service odoo & databasenya dengan menjalankan :
+Sebelum export/import database, matikan service:
 
-```bash 
+```bash
 docker compose down
 ```
 
-Apabila terdapat perubahan pada database dan perubahan tersebut ingin diteruskan ke anggota tim lain, lakukan export database terlebih dahulu menggunakan script pada folder `scripts`.
+Export database:
 
-- macOS/Linux:
+- macOS/Linux
 
-  ```bash
-  ./scripts/export_db.sh
-  ```
+```bash
+./scripts/export_db.sh
+```
 
-- Windows:
+- Windows
 
-  ```bat
-  scripts\export_db.cmd
-  ```
+```bat
+scripts\export_db.cmd
+```
 
-Untuk melanjutkan pengerjaan dari hasil perubahan database rekan tim, lakukan import database terlebih dahulu :
+Import database:
 
-- macOS/Linux:
+- macOS/Linux
 
-  ```bash
-  ./scripts/import_db.sh
-  ```
+```bash
+./scripts/import_db.sh
+```
 
-- Windows:
+- Windows
 
-  ```bat
-  scripts\import_db.cmd
-  ```
+```bat
+scripts\import_db.cmd
+```
+
+## Kesimpulan dan Saran
+
+Implementasi ini memprioritaskan hasil yang paling aman untuk Milestone 5: sistem dapat didemokan end-to-end, role sudah disiapkan, dan satu custom module inti tersedia untuk menutup gap paling penting. Langkah lanjutan yang paling bernilai adalah memperkaya field metadata dokumen, memperketat record rules per role, dan menambahkan screenshot hasil implementasi untuk dokumen final milestone.

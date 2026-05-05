@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_beta_requirement" model="ir.sequence">
+        <field name="name">BETA Requirement</field>
+        <field name="code">beta.requirement</field>
+        <field name="prefix">REQ-</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_beta_document" model="ir.sequence">
+        <field name="name">BETA Controlled Document</field>
+        <field name="code">beta.controlled.document</field>
+        <field name="prefix">DOC-</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

@@ -1,0 +1,60 @@
+.beta_sheet {
+    background: #ffffff;
+}
+
+.beta_page_title h1,
+.beta_page_title h2 {
+    color: #111111;
+}
+
+.beta_card {
+    border-radius: 20px;
+    border: 1px solid #b9e3ea;
+    padding: 20px;
+    background: #eff9fb;
+    min-height: 170px;
+}
+
+.beta_card_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.beta_card_subtitle {
+    color: #4f6970;
+    margin-bottom: 16px;
+}
+
+.beta_card_stats {
+    display: grid;
+    gap: 8px;
+    color: #18444c;
+}
+
+.beta_state_badge {
+    color: #ffffff;
+    text-transform: capitalize;
+    padding: 6px 12px;
+}
+
+.beta_state_draft {
+    background: #5a98d6;
+}
+
+.beta_state_ongoing {
+    background: #72ca59;
+}
+
+.beta_state_done {
+    background: #e8465c;
+}
+
+.o_form_view .btn-primary,
+.o_form_view .btn-success,
+.o_form_view .btn-danger,
+.o_form_view .btn-secondary {
+    border-radius: 12px;
+}

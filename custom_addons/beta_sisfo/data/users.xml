@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="user_beta_sales" model="res.users">
+        <field name="name">BETA Sales User</field>
+        <field name="login">sales_user</field>
+        <field name="password">sales123</field>
+        <field name="email">sales@beta.test</field>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('beta_sisfo.group_beta_sales')])]"/>
+    </record>
+
+    <record id="user_beta_engineering" model="res.users">
+        <field name="name">BETA Engineering User</field>
+        <field name="login">engineer_user</field>
+        <field name="password">engineer123</field>
+        <field name="email">engineering@beta.test</field>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('beta_sisfo.group_beta_engineering')])]"/>
+    </record>
+
+    <record id="user_beta_project_officer" model="res.users">
+        <field name="name">BETA Project Officer</field>
+        <field name="login">po_user</field>
+        <field name="password">po123</field>
+        <field name="email">po@beta.test</field>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('project.group_project_user'), ref('beta_sisfo.group_beta_project_officer')])]"/>
+    </record>
+
+    <record id="user_beta_coo" model="res.users">
+        <field name="name">BETA COO</field>
+        <field name="login">coo_user</field>
+        <field name="password">coo123</field>
+        <field name="email">coo@beta.test</field>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('project.group_project_user'), ref('beta_sisfo.group_beta_coo')])]"/>
+    </record>
+</odoo>

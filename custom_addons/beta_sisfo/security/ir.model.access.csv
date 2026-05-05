@@ -1,0 +1,18 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_beta_workspace_user,beta.workspace user,model_beta_workspace,base.group_user,1,0,0,0
+access_beta_workspace_po,beta.workspace po,model_beta_workspace,beta_sisfo.group_beta_project_officer,1,1,1,1
+access_beta_workspace_coo,beta.workspace coo,model_beta_workspace,beta_sisfo.group_beta_coo,1,1,1,1
+access_beta_folder_user,beta.folder user,model_beta_folder,base.group_user,1,0,0,0
+access_beta_folder_po,beta.folder po,model_beta_folder,beta_sisfo.group_beta_project_officer,1,1,1,1
+access_beta_folder_coo,beta.folder coo,model_beta_folder,beta_sisfo.group_beta_coo,1,1,1,1
+access_beta_requirement_sales,beta.requirement sales,model_beta_requirement,beta_sisfo.group_beta_sales,1,1,1,0
+access_beta_requirement_engineering,beta.requirement engineering,model_beta_requirement,beta_sisfo.group_beta_engineering,1,1,1,0
+access_beta_requirement_po,beta.requirement po,model_beta_requirement,beta_sisfo.group_beta_project_officer,1,1,1,1
+access_beta_requirement_coo,beta.requirement coo,model_beta_requirement,beta_sisfo.group_beta_coo,1,1,1,0
+access_beta_document_sales,beta.controlled.document sales,model_beta_controlled_document,beta_sisfo.group_beta_sales,1,1,1,0
+access_beta_document_engineering,beta.controlled.document engineering,model_beta_controlled_document,beta_sisfo.group_beta_engineering,1,1,1,0
+access_beta_document_po,beta.controlled.document po,model_beta_controlled_document,beta_sisfo.group_beta_project_officer,1,1,1,1
+access_beta_document_coo,beta.controlled.document coo,model_beta_controlled_document,beta_sisfo.group_beta_coo,1,0,0,0
+access_beta_audit_po,beta.audit.log po,model_beta_audit_log,beta_sisfo.group_beta_project_officer,1,0,0,0
+access_beta_audit_coo,beta.audit.log coo,model_beta_audit_log,beta_sisfo.group_beta_coo,1,0,0,0
+access_beta_change_password_user,beta.change.password.wizard user,model_beta_change_password_wizard,base.group_user,1,1,1,1

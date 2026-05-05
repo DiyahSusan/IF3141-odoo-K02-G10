@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_beta_folder_search" model="ir.ui.view">
+        <field name="name">beta.folder.search</field>
+        <field name="model">beta.folder</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="workspace_id"/>
+                <field name="state"/>
+                <filter name="folder_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="folder_ongoing" string="On Going" domain="[('state', '=', 'ongoing')]"/>
+                <filter name="folder_done" string="Done" domain="[('state', '=', 'done')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_beta_folder_tree" model="ir.ui.view">
+        <field name="name">beta.folder.tree</field>
+        <field name="model">beta.folder</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="workspace_id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'ongoing'" decoration-primary="state == 'done'"/>
+                <field name="owner_id"/>
+                <field name="document_count"/>
+                <field name="validated_document_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_beta_folder_kanban" model="ir.ui.view">
+        <field name="name">beta.folder.kanban</field>
+        <field name="model">beta.folder</field>
+        <field name="arch" type="xml">
+            <kanban class="beta_folder_kanban">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state"/>
+                <field name="document_count"/>
+                <field name="validated_document_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click oe_kanban_card beta_card beta_folder_card">
+                            <div class="beta_card_header">
+                                <strong><field name="name"/></strong>
+                                <span t-attf-class="badge rounded-pill beta_state_badge beta_state_#{record.state.raw_value}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+                            <div class="beta_card_subtitle">
+                                <field name="code"/>
+                            </div>
+                            <div class="beta_card_stats">
+                                <div>Total Docs: <field name="document_count"/></div>
+                                <div>Validated: <field name="validated_document_count"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_beta_folder_form" model="ir.ui.view">
+        <field name="name">beta.folder.form</field>
+        <field name="model">beta.folder</field>
+        <field name="arch" type="xml">
+            <form string="Project Folder">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,ongoing,done"/>
+                </header>
+                <sheet class="beta_sheet">
+                    <div class="oe_title beta_page_title">
+                        <h1><field name="name"/></h1>
+                        <h2><field name="code"/></h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="workspace_id"/>
+                            <field name="owner_id"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="document_count" readonly="1"/>
+                            <field name="validated_document_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <tree>
+                                    <field name="reference"/>
+                                    <field name="name"/>
+                                    <field name="version"/>
+                                    <field name="owner_id"/>
+                                    <field name="state" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_beta_folder" model="ir.actions.act_window">
+        <field name="name">Folders</field>
+        <field name="res_model">beta.folder</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="beta_sisfo.view_beta_folder_search"/>
+    </record>
+</odoo>

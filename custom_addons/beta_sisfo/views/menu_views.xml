@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_beta_root" name="BETA Control Center" sequence="10"/>
+    <menuitem id="menu_beta_workspace" name="Workspaces" parent="menu_beta_root" action="action_beta_workspace" sequence="10"/>
+    <menuitem id="menu_beta_folder" name="Folders" parent="menu_beta_root" action="action_beta_folder" sequence="15"/>
+    <menuitem id="menu_beta_requirement" name="Requirement Validation" parent="menu_beta_root" action="action_beta_requirement" sequence="20"/>
+    <menuitem id="menu_beta_document" name="Controlled Documents" parent="menu_beta_root" action="action_beta_document" sequence="30"/>
+    <menuitem id="menu_beta_audit" name="Audit Visibility" parent="menu_beta_root" action="action_beta_audit" sequence="40" groups="beta_sisfo.group_beta_project_officer,beta_sisfo.group_beta_coo"/>
+    <menuitem id="menu_beta_profile" name="My Profile" parent="menu_beta_root" action="action_server_beta_my_profile" sequence="50"/>
+</odoo>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_beta_requirement_search" model="ir.ui.view">
+        <field name="name">beta.requirement.search</field>
+        <field name="model">beta.requirement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="client_name"/>
+                <field name="workspace_id"/>
+                <field name="requested_by_id"/>
+                <field name="project_officer_id"/>
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_submitted" string="Submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter name="filter_revision" string="Needs Revision" domain="[('state', '=', 'revision')]"/>
+                <filter name="filter_validated" string="Validated" domain="[('state', '=', 'validated')]"/>
+                <filter name="filter_rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_workspace" string="Workspace" context="{'group_by': 'workspace_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_beta_requirement_tree" model="ir.ui.view">
+        <field name="name">beta.requirement.tree</field>
+        <field name="model">beta.requirement</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="project_id" groups="beta_sisfo.group_beta_project_officer,beta_sisfo.group_beta_coo"/>
+                <field name="requested_by_id"/>
+                <field name="project_officer_id"/>
+                <field name="write_date" string="Date"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'submitted'" decoration-success="state == 'validated'" decoration-danger="state == 'rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_beta_requirement_form" model="ir.ui.view">
+        <field name="name">beta.requirement.form</field>
+        <field name="model">beta.requirement</field>
+        <field name="arch" type="xml">
+            <form string="Add Request">
+                <header>
+                    <button name="action_submit" type="object" string="Submit Request" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_request_revision" type="object" string="Request Revision" invisible="state not in ('submitted','validated')"/>
+                    <button name="action_validate" type="object" string="Accept" class="btn-success" invisible="state not in ('submitted','revision')"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn-danger" invisible="state not in ('submitted','revision')"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,revision,validated,rejected"/>
+                </header>
+                <sheet class="beta_sheet">
+                    <div class="oe_title beta_page_title">
+                        <h1><field name="name" placeholder="Request Title"/></h1>
+                        <h2><field name="reference" readonly="1"/></h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="workspace_id"/>
+                            <field name="client_name"/>
+                            <field name="requested_by_id" readonly="1"/>
+                            <field name="engineer_id"/>
+                        </group>
+                        <group>
+                            <field name="project_officer_id"/>
+                            <field name="lead_id" readonly="1" groups="beta_sisfo.group_beta_project_officer,beta_sisfo.group_beta_coo"/>
+                            <field name="project_id" readonly="1" groups="beta_sisfo.group_beta_project_officer,beta_sisfo.group_beta_coo"/>
+                            <field name="readiness_percent" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Request Detail">
+                            <group>
+                                <field name="requirement_summary" placeholder="Describe the requested solution, scope, and acceptance expectations."/>
+                                <field name="sales_notes"/>
+                                <field name="engineering_notes"/>
+                                <field name="revision_feedback"/>
+                            </group>
+                        </page>
+                        <page string="Uploaded Request">
+                            <group>
+                                <field name="file_name"/>
+                                <field name="file" filename="file_name"/>
+                                <field name="attachment_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Controlled Documents">
+                            <field name="document_ids">
+                                <tree editable="bottom">
+                                    <field name="reference" readonly="1"/>
+                                    <field name="folder_id"/>
+                                    <field name="name"/>
+                                    <field name="category"/>
+                                    <field name="version"/>
+                                    <field name="state" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Validation">
+                            <group>
+                                <field name="validated_by_id" readonly="1"/>
+                                <field name="validated_on" readonly="1"/>
+                                <field name="document_count" readonly="1"/>
+                                <field name="validated_document_count" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_beta_requirement" model="ir.actions.act_window">
+        <field name="name">Request Validations</field>
+        <field name="res_model">beta.requirement</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="beta_sisfo.view_beta_requirement_search"/>
+    </record>
+</odoo>

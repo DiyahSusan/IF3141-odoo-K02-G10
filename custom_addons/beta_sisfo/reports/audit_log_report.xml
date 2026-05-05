@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_beta_audit_log" model="ir.actions.report">
+        <field name="name">Audit Log</field>
+        <field name="model">beta.audit.log</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">beta_sisfo.report_beta_audit_log_document</field>
+        <field name="report_file">beta_sisfo.report_beta_audit_log_document</field>
+        <field name="binding_model_id" ref="model_beta_audit_log"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_beta_audit_log_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>BETA Audit Log</h2>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Action Type</th>
+                                <th>Action</th>
+                                <th>Document</th>
+                                <th>Project</th>
+                                <th>Done By</th>
+                                <th>Version</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="row">
+                                <tr>
+                                    <td><span t-field="row.action_date"/></td>
+                                    <td><span t-field="row.action_type"/></td>
+                                    <td><span t-field="row.action"/></td>
+                                    <td><span t-esc="row.document_id.display_name or row.record_display_name"/></td>
+                                    <td><span t-esc="row.project_id.display_name or ''"/></td>
+                                    <td><span t-esc="row.user_id.display_name or ''"/></td>
+                                    <td><span t-esc="row.version or ''"/></td>
+                                    <td><span t-esc="row.note or ''"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

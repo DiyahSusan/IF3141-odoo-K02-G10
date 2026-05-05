@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workspace_drone_delivery" model="beta.workspace">
+        <field name="name">Drone Delivery Workspace</field>
+        <field name="code">DD-WS</field>
+        <field name="description">Shared workspace for requirement validation, technical documents, and audit evidence.</field>
+        <field name="owner_id" ref="beta_sisfo.user_beta_project_officer"/>
+        <field name="state">ongoing</field>
+        <field name="member_ids" eval="[(6, 0, [ref('beta_sisfo.user_beta_sales'), ref('beta_sisfo.user_beta_engineering'), ref('beta_sisfo.user_beta_project_officer'), ref('beta_sisfo.user_beta_coo')])]"/>
+    </record>
+
+    <record id="folder_specification" model="beta.folder">
+        <field name="name">Technical Specifications</field>
+        <field name="code">DD-F01</field>
+        <field name="workspace_id" ref="beta_sisfo.workspace_drone_delivery"/>
+        <field name="owner_id" ref="beta_sisfo.user_beta_project_officer"/>
+        <field name="state">ongoing</field>
+        <field name="description">Primary folder for controlled specifications and supporting evidence.</field>
+    </record>
+
+    <record id="requirement_drone_spec" model="beta.requirement">
+        <field name="name">Autonomous Mapping Drone Requirement</field>
+        <field name="workspace_id" ref="beta_sisfo.workspace_drone_delivery"/>
+        <field name="requested_by_id" ref="beta_sisfo.user_beta_sales"/>
+        <field name="engineer_id" ref="beta_sisfo.user_beta_engineering"/>
+        <field name="project_officer_id" ref="beta_sisfo.user_beta_project_officer"/>
+        <field name="client_name">PT Contoh Mitra Aero</field>
+        <field name="requirement_summary">Client requests an autonomous mapping drone package with 45-minute flight endurance, multispectral payload, and operator handover SOP.</field>
+        <field name="sales_notes">Sales promises a two-phase delivery: prototype validation then production-ready documentation.</field>
+        <field name="engineering_notes">Engineering confirms payload feasibility but requests a controlled revision workflow for payload calibration documents.</field>
+        <field name="state">submitted</field>
+    </record>
+
+    <record id="document_initial_spec" model="beta.controlled.document">
+        <field name="name">Initial Technical Specification</field>
+        <field name="requirement_id" ref="beta_sisfo.requirement_drone_spec"/>
+        <field name="folder_id" ref="beta_sisfo.folder_specification"/>
+        <field name="owner_id" ref="beta_sisfo.user_beta_engineering"/>
+        <field name="category">specification</field>
+        <field name="version">v1</field>
+        <field name="state">submitted</field>
+        <field name="notes">Submitted as the first controlled specification document for validation.</field>
+    </record>
+</odoo>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_beta_document_search" model="ir.ui.view">
+        <field name="name">beta.controlled.document.search</field>
+        <field name="model">beta.controlled.document</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="requirement_id"/>
+                <field name="workspace_id"/>
+                <field name="folder_id"/>
+                <filter name="filter_doc_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_doc_submitted" string="Submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter name="filter_doc_revision" string="Needs Revision" domain="[('state', '=', 'revision')]"/>
+                <filter name="filter_doc_rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter name="filter_doc_validated" string="Validated" domain="[('state', '=', 'validated')]"/>
+                <filter name="filter_doc_obsolete" string="Obsolete" domain="[('state', '=', 'obsolete')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_doc_workspace" string="Workspace" context="{'group_by': 'workspace_id'}"/>
+                    <filter name="group_doc_folder" string="Folder" context="{'group_by': 'folder_id'}"/>
+                    <filter name="group_doc_category" string="Category" context="{'group_by': 'category'}"/>
+                    <filter name="group_doc_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_beta_document_tree" model="ir.ui.view">
+        <field name="name">beta.controlled.document.tree</field>
+        <field name="model">beta.controlled.document</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="folder_id"/>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="write_date" string="Date"/>
+                <field name="owner_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state in ('submitted','revision')" decoration-success="state == 'validated'" decoration-danger="state == 'rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_beta_document_form" model="ir.ui.view">
+        <field name="name">beta.controlled.document.form</field>
+        <field name="model">beta.controlled.document</field>
+        <field name="arch" type="xml">
+            <form string="Upload Document">
+                <header>
+                    <button name="action_submit" type="object" string="Submit" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_request_revision" type="object" string="Request Revision" invisible="state not in ('submitted','validated')"/>
+                    <button name="action_validate" type="object" string="Accept" class="btn-success" invisible="state not in ('submitted','revision')"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn-danger" invisible="state not in ('submitted','revision')"/>
+                    <button name="action_create_revision" type="object" string="Create Revision" invisible="state != 'validated'"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,revision,rejected,validated,obsolete"/>
+                </header>
+                <sheet class="beta_sheet">
+                    <div class="oe_title beta_page_title">
+                        <h1><field name="name" placeholder="Document Title"/></h1>
+                        <h2><field name="reference" readonly="1"/></h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="requirement_id"/>
+                            <field name="folder_id"/>
+                            <field name="workspace_id" readonly="1"/>
+                            <field name="project_id" readonly="1" groups="beta_sisfo.group_beta_project_officer,beta_sisfo.group_beta_coo"/>
+                        </group>
+                        <group>
+                            <field name="owner_id" readonly="1"/>
+                            <field name="category"/>
+                            <field name="version"/>
+                            <field name="previous_document_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Document Preview">
+                            <group>
+                                <field name="file_name"/>
+                                <field name="file" filename="file_name"/>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                        <page string="Validation">
+                            <group>
+                                <field name="validated_by_id" readonly="1"/>
+                                <field name="validated_on" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_beta_document" model="ir.actions.act_window">
+        <field name="name">Controlled Documents</field>
+        <field name="res_model">beta.controlled.document</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="beta_sisfo.view_beta_document_search"/>
+    </record>
+</odoo>
