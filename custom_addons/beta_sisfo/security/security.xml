@@ -28,4 +28,92 @@
         <field name="category_id" ref="beta_sisfo.module_category_beta_sisfo"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('project.group_project_user'))]"/>
     </record>
+
+    <record id="rule_beta_workspace_member_visibility" model="ir.rule">
+        <field name="name">Workspace visibility for team members</field>
+        <field name="model_id" ref="model_beta_workspace"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_sales')), (4, ref('beta_sisfo.group_beta_engineering'))]"/>
+        <field name="domain_force">['|', ('owner_id', '=', user.id), ('member_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="rule_beta_workspace_manager_visibility" model="ir.rule">
+        <field name="name">Workspace visibility for managers</field>
+        <field name="model_id" ref="model_beta_workspace"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_project_officer')), (4, ref('beta_sisfo.group_beta_coo'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="rule_beta_folder_member_visibility" model="ir.rule">
+        <field name="name">Folder visibility for team members</field>
+        <field name="model_id" ref="model_beta_folder"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_sales')), (4, ref('beta_sisfo.group_beta_engineering'))]"/>
+        <field name="domain_force">['|', ('workspace_id.owner_id', '=', user.id), ('workspace_id.member_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="rule_beta_folder_manager_visibility" model="ir.rule">
+        <field name="name">Folder visibility for managers</field>
+        <field name="model_id" ref="model_beta_folder"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_project_officer')), (4, ref('beta_sisfo.group_beta_coo'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="rule_beta_requirement_member_visibility" model="ir.rule">
+        <field name="name">Requirement visibility for team members</field>
+        <field name="model_id" ref="model_beta_requirement"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_sales')), (4, ref('beta_sisfo.group_beta_engineering'))]"/>
+        <field name="domain_force">['|', ('workspace_id.owner_id', '=', user.id), ('workspace_id.member_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="rule_beta_requirement_manager_visibility" model="ir.rule">
+        <field name="name">Requirement visibility for managers</field>
+        <field name="model_id" ref="model_beta_requirement"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_project_officer')), (4, ref('beta_sisfo.group_beta_coo'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="rule_beta_document_member_visibility" model="ir.rule">
+        <field name="name">Controlled document visibility for team members</field>
+        <field name="model_id" ref="model_beta_controlled_document"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_sales')), (4, ref('beta_sisfo.group_beta_engineering'))]"/>
+        <field name="domain_force">['|', ('workspace_id.owner_id', '=', user.id), ('workspace_id.member_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="rule_beta_document_manager_visibility" model="ir.rule">
+        <field name="name">Controlled document visibility for managers</field>
+        <field name="model_id" ref="model_beta_controlled_document"/>
+        <field name="groups" eval="[(4, ref('beta_sisfo.group_beta_project_officer')), (4, ref('beta_sisfo.group_beta_coo'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
 </odoo>
