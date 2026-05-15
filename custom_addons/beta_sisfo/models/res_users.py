@@ -1,4 +1,5 @@
 from odoo import _, api, fields, models
+from odoo.exceptions import AccessError
 
 
 class ResUsers(models.Model):
@@ -22,18 +23,12 @@ class ResUsers(models.Model):
 
     @api.model
     def action_open_my_profile(self):
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("My Profile"),
-            "res_model": "res.users",
-            "view_mode": "form",
-            "view_id": self.env.ref("beta_sisfo.view_beta_user_profile_form").id,
-            "res_id": self.env.user.id,
-            "target": "current",
-        }
+        return self.env["beta.user.profile"].action_open_my_profile()
 
     def action_open_password_wizard(self):
         self.ensure_one()
+        if self != self.env.user:
+            raise AccessError(_("You can only change your own password."))
         return {
             "type": "ir.actions.act_window",
             "name": _("Change Password"),
@@ -41,5 +36,5 @@ class ResUsers(models.Model):
             "view_mode": "form",
             "view_id": self.env.ref("beta_sisfo.view_beta_change_password_wizard_form").id,
             "target": "new",
-            "context": {"default_user_id": self.id},
+            "context": {"default_user_id": self.env.user.id},
         }

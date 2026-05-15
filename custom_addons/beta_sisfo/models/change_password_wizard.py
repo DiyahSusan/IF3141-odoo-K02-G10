@@ -18,5 +18,5 @@ class BetaChangePasswordWizard(models.TransientModel):
 
     def action_apply(self):
         self.ensure_one()
-        self.user_id.sudo().write({"password": self.new_password})
+        self.env.user.sudo().write({"password": self.new_password})
         return {"type": "ir.actions.act_window_close"}

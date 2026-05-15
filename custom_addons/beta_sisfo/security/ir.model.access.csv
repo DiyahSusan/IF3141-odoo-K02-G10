@@ -16,3 +16,4 @@ access_beta_document_coo,beta.controlled.document coo,model_beta_controlled_docu
 access_beta_audit_po,beta.audit.log po,model_beta_audit_log,beta_sisfo.group_beta_project_officer,1,0,0,0
 access_beta_audit_coo,beta.audit.log coo,model_beta_audit_log,beta_sisfo.group_beta_coo,1,0,0,0
 access_beta_change_password_user,beta.change.password.wizard user,model_beta_change_password_wizard,base.group_user,1,1,1,1
+access_beta_user_profile_user,beta.user.profile user,model_beta_user_profile,base.group_user,1,1,1,1
