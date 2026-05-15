@@ -7,6 +7,15 @@
 - Sistem: `BETA Control Center`
 - Perusahaan: `PT Bentara Tabang Nusantara (BETA)`
 
+| NIM | Nama |
+|:-----|:------:|
+| 13523063    |Syahrizal Bani Khairan       |
+| 13523067    |Benedict Presley       |
+| 13523080    |Diyah Susan Nugrahani       |
+| 13523085    |Muhammad Jibril Ibrahim       |
+| 13523090    |Nayaka Ghana Subrata       |
+| 13523109    |Haegen Quinston       |
+
 ## Deskripsi Sistem
 
 Repositori ini berisi implementasi Milestone 5 untuk sistem informasi PT BETA menggunakan Odoo 17 berbasis Docker. Fokus implementasi mengikuti hasil milestone sebelumnya: pengendalian dokumen terpusat, validasi requirement lintas divisi, keterlacakan proyek, dan visibilitas audit untuk mendukung kesiapan ISO 9001.
@@ -44,6 +53,10 @@ docker compose up -d
 
 2. Buka Odoo di `http://localhost:8069`.
 
+<p align="center">
+    <img src="./docs/login_page.png">
+</p>
+
 3. Login sebagai admin:
 
 ```text
@@ -51,12 +64,20 @@ username: admin
 password: admin
 ```
 
+<p align="center">
+    <img src="./docs/landing_page.png">
+</p>
+
 4. Install atau upgrade custom module:
 
 - buka menu `Apps`
 - klik `Update Apps List`
 - cari `BETA SISFO Control Center`
 - klik `Install`
+
+<p align="center">
+    <img src="./docs/apps_page.png">
+</p>
 
 Jika modul sudah pernah terpasang dan ada perubahan kode:
 
@@ -66,6 +87,10 @@ Jika modul sudah pernah terpasang dan ada perubahan kode:
 ```bash
 docker compose restart web
 ```
+
+<p align="center">
+    <img src="./docs/module_page.png">
+</p>
 
 ## Kredensial Demo Role
 
